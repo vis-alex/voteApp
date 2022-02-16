@@ -37,13 +37,13 @@ public class UserController {
 //
 //    }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping()
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody UserTo userTo) {
         userService.update(userTo);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> register(@RequestBody UserTo userTo) {
         System.out.println("register controller");

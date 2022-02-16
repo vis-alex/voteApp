@@ -21,7 +21,7 @@ public class User {
 
     @Id
     @SequenceGenerator(name = "SEQ", sequenceName = "SEQ", allocationSize = 1, initialValue = START_SEQ)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ")
     private Integer id;
 
     @Column(name = "name")
