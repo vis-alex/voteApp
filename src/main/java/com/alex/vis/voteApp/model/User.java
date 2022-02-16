@@ -2,6 +2,7 @@ package com.alex.vis.voteApp.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
@@ -11,18 +12,13 @@ import javax.persistence.*;
 import java.util.EnumSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    public static final int START_SEQ = 100000;
-
-    @Id
-    @SequenceGenerator(name = "SEQ", sequenceName = "SEQ", allocationSize = 1, initialValue = START_SEQ)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ")
-    private Integer id;
+public class User extends BaseEntity{
 
     @Column(name = "name")
     private String name;
@@ -42,7 +38,7 @@ public class User {
     private Set<Role> roles;
 
     public User(Integer id, String name, String password, Role role, Role ... roles) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.password = password;
         this.roles = EnumSet.of(role, roles);

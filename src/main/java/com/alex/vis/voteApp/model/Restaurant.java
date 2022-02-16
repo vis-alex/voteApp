@@ -6,11 +6,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "users")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+//
+//@Entity
+//@Table(name = "users")
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
 public class Restaurant {
 
 //    @Id
