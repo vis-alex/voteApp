@@ -6,7 +6,13 @@ import com.alex.vis.voteApp.to.UserTo;
 import java.util.List;
 
 public interface UserService {
-    List<UserTo> getAll();
+    List<User> getAll();
 
-    UserTo get(int id);
+    User get(int id);
+
+    User create(UserTo userTo);
+
+    void delete(int id);
+
+    void update(UserTo userTo);
 }
