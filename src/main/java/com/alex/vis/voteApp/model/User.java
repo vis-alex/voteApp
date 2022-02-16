@@ -12,13 +12,13 @@ import javax.persistence.*;
 import java.util.EnumSet;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(of = {"name"}, callSuper = false)
 @Entity
 @Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends BaseEntity{
+public class User extends AbstractBaseEntity {
 
     @Column(name = "name")
     private String name;

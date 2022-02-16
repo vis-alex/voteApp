@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class BaseEntity {
+public abstract class AbstractBaseEntity {
     public static final int START_SEQ = 100000;
 
     @Id
