@@ -1,7 +1,8 @@
-package com.alex.vis.voteApp.service;
+package com.alex.vis.voteApp.service.user;
 
 import com.alex.vis.voteApp.model.User;
 import com.alex.vis.voteApp.repository.UserRepository;
+import com.alex.vis.voteApp.service.user.UserService;
 import com.alex.vis.voteApp.to.UserTo;
 import com.alex.vis.voteApp.util.UserUtil;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 

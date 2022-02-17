@@ -1,4 +1,4 @@
-package com.alex.vis.voteApp.service;
+package com.alex.vis.voteApp.service.user;
 
 import com.alex.vis.voteApp.model.User;
 import com.alex.vis.voteApp.to.UserTo;

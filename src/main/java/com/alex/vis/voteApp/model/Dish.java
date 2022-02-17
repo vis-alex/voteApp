@@ -1,20 +1,19 @@
 package com.alex.vis.voteApp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-@EqualsAndHashCode(of = {"name"}, callSuper = false)
 @Entity
 @Table(name = "dishes")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(of = {"name", "price"}, callSuper = true)
 public class Dish extends AbstractBaseEntity{
 
     @Column(name = "name")
@@ -26,5 +25,7 @@ public class Dish extends AbstractBaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference
     private Restaurant restaurant;
+
 }

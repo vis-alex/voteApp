@@ -1,19 +1,18 @@
 package com.alex.vis.voteApp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
-@EqualsAndHashCode(of = {"name"}, callSuper = false)
 @Entity
 @Table(name = "restaurants")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(of = {"name"}, callSuper = true)
 public class Restaurant extends AbstractBaseEntity {
 
     @Column(name = "name")
@@ -21,5 +20,7 @@ public class Restaurant extends AbstractBaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("name")
-    private List<Dish> dishes;
+    @JsonManagedReference
+    private Set<Dish> dishes;
+
 }
