@@ -45,7 +45,6 @@ public class UserController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> register(@RequestBody UserTo userTo) {
-        System.out.println("register controller");
         User created = userService.create(userTo);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()

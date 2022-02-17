@@ -29,7 +29,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserTo userTo) {
-        System.out.println("register service");
         return userRepository.save(UserUtil.createUserFromTo(userTo));
     }
 
