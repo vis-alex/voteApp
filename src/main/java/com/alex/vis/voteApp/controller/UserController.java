@@ -30,25 +30,30 @@ public class UserController {
     public User get(@PathVariable int id) {
         return userService.get(id);
     }
-//
-//    @DeleteMapping
-//    public void delete(@AuthenticationPrincipal ) {
-//
-//    }
 
-    @PutMapping()
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable int id) {
+        userService.delete(id);
+    }
+
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody UserTo userTo) {
-        userService.update(userTo);
+    public void update(@RequestBody User user, @PathVariable int id) {
+        userService.update(user, id);
     }
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<User> register(@RequestBody UserTo userTo) {
-        User created = userService.create(userTo);
+    public ResponseEntity<User> register(@RequestBody User user) {
+        User created = userService.create(user);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(USERS_URL).build().toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
+    }
+
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void enable(@PathVariable int id, @RequestParam boolean enabled) {
+        userService.enable(id, enabled);
     }
 }

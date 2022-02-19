@@ -10,9 +10,11 @@ public interface UserService {
 
     User get(int id);
 
-    User create(UserTo userTo);
+    User create(User user);
 
     void delete(int id);
 
-    void update(UserTo userTo);
+    void update(User user, int id);
+
+    void enable(int id, boolean enabled);
 }

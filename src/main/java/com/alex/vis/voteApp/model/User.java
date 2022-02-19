@@ -1,5 +1,6 @@
 package com.alex.vis.voteApp.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Set;
 
 @EqualsAndHashCode(of = {"name"}, callSuper = false)
@@ -18,14 +20,17 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends AbstractBaseEntity {
+public class User extends AbstractBaseEntity implements HasId{
 
     @Column(name = "name")
     private String name;
 
     @Column(name = "password")
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+
+    @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
+    private boolean enabled = true;
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
@@ -35,7 +40,7 @@ public class User extends AbstractBaseEntity {
     @BatchSize(size = 200)
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     public User(Integer id, String name, String password, Role role, Role ... roles) {
         super(id);

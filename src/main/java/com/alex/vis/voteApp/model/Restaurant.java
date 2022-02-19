@@ -13,7 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @EqualsAndHashCode(of = {"name"}, callSuper = true)
-public class Restaurant extends AbstractBaseEntity {
+public class Restaurant extends AbstractBaseEntity implements HasId{
 
     @Column(name = "name")
     private String name;

@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @EqualsAndHashCode(of = {"name", "price"}, callSuper = true)
-public class Dish extends AbstractBaseEntity{
+public class Dish extends AbstractBaseEntity implements HasId{
 
     @Column(name = "name")
     private String name;

@@ -11,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 public class SecurityUser implements UserDetails {
@@ -69,10 +67,10 @@ public class SecurityUser implements UserDetails {
         return new org.springframework.security.core.userdetails.User(
                 user.getName(),
                 user.getPassword(),
-                true,
-                true,
-                true,
-                true,
+                user.isEnabled(),
+                user.isEnabled(),
+                user.isEnabled(),
+                user.isEnabled(),
                 user.getRoles()
                 );
     }
