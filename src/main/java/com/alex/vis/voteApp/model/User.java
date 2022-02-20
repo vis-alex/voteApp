@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,10 +44,4 @@ public class User extends AbstractBaseEntity implements HasId{
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Role> roles = new HashSet<>();
 
-    public User(Integer id, String name, String password, Role role, Role ... roles) {
-        super(id);
-        this.name = name;
-        this.password = password;
-        this.roles = EnumSet.of(role, roles);
-    }
 }

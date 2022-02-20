@@ -40,10 +40,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findById(id).orElse(null);
     }
 
+    public User getByName(String name) {
+        return userRepository.findByName(name).orElse(null);
+    }
+
     @Override
     public User create(User user) {
-        ValidationUtil.checkNew(user);
         Assert.notNull(user, "user must not be null");
+        ValidationUtil.checkNew(user);
         user.getRoles().add(Role.USER);
         return userRepository.save(user);
     }
@@ -55,9 +59,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
+    public void deleteByName(String name) {
+        User user = getByName(name);
+
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format("There is not user with name %s", name));
+        }
+        delete(user.getId());
+    }
+
+    @Override
     public void update(User user, int id) {
-        ValidationUtil.assureIdConsistent(user, id);
         Assert.notNull(user, "user must not be null");
+        ValidationUtil.assureIdConsistent(user, id);
         userRepository.save(UserUtil.prepareToSave(user, passwordEncoder));
     }
 

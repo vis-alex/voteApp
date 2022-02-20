@@ -2,7 +2,6 @@ package com.alex.vis.voteApp.util;
 
 import com.alex.vis.voteApp.model.Role;
 import com.alex.vis.voteApp.model.User;
-import com.alex.vis.voteApp.to.UserTo;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UserUtil {

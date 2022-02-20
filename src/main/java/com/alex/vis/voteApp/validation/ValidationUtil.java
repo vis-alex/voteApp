@@ -2,6 +2,8 @@ package com.alex.vis.voteApp.validation;
 
 import com.alex.vis.voteApp.exception.IllegalRequestDataException;
 import com.alex.vis.voteApp.model.HasId;
+import com.alex.vis.voteApp.model.Role;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public class ValidationUtil {
     public static void checkNew(HasId bean) {
@@ -16,6 +18,12 @@ public class ValidationUtil {
             bean.setId(id);
         } else if (bean.id() != id) {
             throw new IllegalRequestDataException(bean + " must be with id=" + id);
+        }
+    }
+
+    public static void checkRole(UserDetails user) {
+        if (!user.getAuthorities().contains(Role.ADMIN)) {
+            throw new IllegalRequestDataException("Forbidden operation. You must have Role_ADMIN");
         }
     }
 }
