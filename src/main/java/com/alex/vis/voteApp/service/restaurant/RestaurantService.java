@@ -10,9 +10,9 @@ public interface RestaurantService {
 
     Restaurant get(int id);
 
-    Restaurant create(UserDetails user, Restaurant restaurant);
+    Restaurant create(Restaurant restaurant);
 
-    void delete(UserDetails user, int id);
+    void delete(int id);
 
     void update(Restaurant restaurant, int id);
 

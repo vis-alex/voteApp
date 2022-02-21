@@ -2,11 +2,14 @@ package com.alex.vis.voteApp.controller;
 
 import com.alex.vis.voteApp.model.User;
 import com.alex.vis.voteApp.service.user.UserService;
+import com.alex.vis.voteApp.to.UserTo;
+import com.alex.vis.voteApp.util.UserUtil;
 import com.alex.vis.voteApp.validation.ValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -27,14 +30,23 @@ public abstract class AbstractUserController {
         return userService.get(id);
     }
 
-    protected User create(User user) {
-        log.info("create {}", user);
-        return userService.create(user);
-    }
-
     protected void delete(int id) {
         log.info("delete {}", id);
         userService.delete(id);
+    }
+
+    protected User create(User user) {
+        log.info("create {}", user);
+        Assert.notNull(user, "user must not be null");
+        ValidationUtil.checkNew(user);
+        return userService.create(user);
+    }
+
+    protected User create(UserTo userTo) {
+        log.info("create {}", userTo);
+        Assert.notNull(userTo, "user must not be null");
+        ValidationUtil.checkNew(userTo);
+        return userService.create(UserUtil.createNewFromTo(userTo));
     }
 
     protected void update(User user, int id) {
@@ -42,23 +54,16 @@ public abstract class AbstractUserController {
         userService.update(user, id);
     }
 
-    protected void updateByName(User user, String name) {
-        log.info("update {} with name={}", user, name);
-        userService.updateByName(user, name);
+    public void update(UserTo userTo, int id) {
+        log.info("update {} with id={}", userTo, id);
+        ValidationUtil.assureIdConsistent(userTo, id);
+        userService.update(userTo);
     }
+
 
     protected void enable(int id, boolean enabled) {
         log.info(enabled ? "enable {}" : "disable {}", id);
         userService.enable(id, enabled);
     }
 
-    protected User getByName(String name) {
-        log.info("get User by name={}", name);
-        return userService.getByName(name);
-    }
-
-    protected void deleteByName(String name) {
-        log.info("delete User by name={}", name);
-        userService.deleteByName(name);
-    }
 }

@@ -1,9 +1,11 @@
 package com.alex.vis.voteApp.service.user;
 
+import com.alex.vis.voteApp.exception.NotFoundException;
 import com.alex.vis.voteApp.model.Role;
 import com.alex.vis.voteApp.model.User;
 import com.alex.vis.voteApp.repository.UserRepository;
 import com.alex.vis.voteApp.security.AuthorizedUser;
+import com.alex.vis.voteApp.to.UserTo;
 import com.alex.vis.voteApp.util.UserUtil;
 import com.alex.vis.voteApp.validation.ValidationUtil;
 import lombok.RequiredArgsConstructor;
@@ -36,46 +38,27 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User get(int id) {
-        return userRepository.findById(id).orElse(null);
+        return ValidationUtil.checkNotFoundWithId(userRepository.getById(id), id);
     }
 
-    public User getByName(String name) {
-        return userRepository.findByName(name).orElse(null);
+    //TODO upgrade delete with custom queries in repo
+    @Override
+    public void delete(int id) {
+            userRepository.deleteById(id);
     }
 
     @Override
     public User create(User user) {
-        Assert.notNull(user, "user must not be null");
-        ValidationUtil.checkNew(user);
         user.getRoles().add(Role.USER);
         return userRepository.save(user);
     }
 
-    @Override
-    public void delete(int id) {
-        Optional<User> user = userRepository.findById(id);
-        user.ifPresent(u -> userRepository.deleteById(id));
-    }
-
-    @Override
     @Transactional
-    public void deleteByName(String name) {
-        User user = getByName(name);
-        ValidationUtil.checkNull(user);
-        delete(user.getId());
+    public void update(UserTo userTo) {
+        User oldUser = get(userTo.id());
+        User newUser = UserUtil.prepareToSave(UserUtil.updateFromTo(oldUser, userTo), passwordEncoder);
+        userRepository.save(newUser);
     }
-
-    @Override
-    @Transactional
-    public void updateByName(User newUser, String name) {
-        ValidationUtil.checkNull(newUser);
-        User oldUser = getByName(name);
-        ValidationUtil.checkNull(oldUser);
-
-        userRepository.save(UserUtil.prepareToUpdate(oldUser, newUser));
-    }
-
-    //TODO Refactor update/create methods.
 
     @Override
     public void update(User user, int id) {

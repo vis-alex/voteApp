@@ -1,6 +1,6 @@
 package com.alex.vis.voteApp.to;
 
-import com.sun.istack.NotNull;
+import com.alex.vis.voteApp.model.HasId;
 import lombok.*;
 
 import java.io.Serial;
@@ -9,7 +9,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserTo implements Serializable {
+public class UserTo implements Serializable, HasId {
     @Serial
     private static final long serialVersionUID = 1L;
 

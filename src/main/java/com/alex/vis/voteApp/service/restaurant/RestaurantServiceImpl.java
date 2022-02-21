@@ -4,7 +4,6 @@ import com.alex.vis.voteApp.model.Restaurant;
 import com.alex.vis.voteApp.repository.RestaurantRepository;
 import com.alex.vis.voteApp.validation.ValidationUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,20 +25,21 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public Restaurant create(UserDetails user, Restaurant restaurant) {
-        ValidationUtil.checkRole(user);
+    public Restaurant create(Restaurant restaurant) {
+        ValidationUtil.checkRole();
         ValidationUtil.checkNew(restaurant);
         return restaurantRepository.save(restaurant);
     }
 
     @Override
-    public void delete(UserDetails user, int id) {
-        ValidationUtil.checkRole(user);
+    public void delete(int id) {
+        ValidationUtil.checkRole();
         restaurantRepository.deleteById(id);
     }
 
     @Override
     public void update(Restaurant restaurant, int id) {
+        ValidationUtil.checkRole();
         ValidationUtil.assureIdConsistent(restaurant, id);
         restaurantRepository.save(restaurant);
     }

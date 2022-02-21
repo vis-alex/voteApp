@@ -35,12 +35,12 @@ public class RestaurantController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@AuthenticationPrincipal UserDetails authUser, @PathVariable int id) {
-        restaurantService.delete(authUser, id);
+        restaurantService.delete(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> create(@AuthenticationPrincipal UserDetails authUser, @RequestBody Restaurant restaurant) {
-        Restaurant created = restaurantService.create(authUser, restaurant);
+    public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurant) {
+        Restaurant created = restaurantService.create(restaurant);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(RESTAURANT_URL).build().toUri();

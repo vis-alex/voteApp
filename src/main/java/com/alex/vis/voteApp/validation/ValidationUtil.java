@@ -1,9 +1,12 @@
 package com.alex.vis.voteApp.validation;
 
 import com.alex.vis.voteApp.exception.IllegalRequestDataException;
+import com.alex.vis.voteApp.exception.NotFoundException;
 import com.alex.vis.voteApp.model.HasId;
 import com.alex.vis.voteApp.model.Role;
 import com.alex.vis.voteApp.model.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -15,7 +18,6 @@ public class ValidationUtil {
     }
 
     public static void assureIdConsistent(HasId bean, int id) {
-//      conservative when you reply, but accept liberally (http://stackoverflow.com/a/32728226/548473)
         if (bean.isNew()) {
             bean.setId(id);
         } else if (bean.id() != id) {
@@ -23,8 +25,8 @@ public class ValidationUtil {
         }
     }
 
-    public static void checkRole(UserDetails user) {
-        if (!user.getAuthorities().contains(Role.ADMIN)) {
+    public static void checkRole() {
+        if (!SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(Role.ADMIN)) {
             throw new IllegalRequestDataException("Forbidden operation. You must have Role_ADMIN");
         }
     }
@@ -33,5 +35,12 @@ public class ValidationUtil {
         if (user == null) {
             throw new UsernameNotFoundException("User is null");
         }
+    }
+
+    public static <T> T checkNotFoundWithId(T obj, int id) {
+        if (obj == null) {
+            throw new NotFoundException("Not found entity wit id=" + id);
+        }
+        return obj;
     }
 }

@@ -13,12 +13,18 @@ public class UserUtil {
         return user;
     }
 
-    public static User prepareToUpdate(User oldUser, User newUser) {
-        oldUser.setPassword(newUser.getPassword());
-        return null;
-    }
 
     public static UserTo asTo(User user) {
         return new UserTo(user.getId(), user.getName(), user.getPassword());
+    }
+
+    public static User createNewFromTo(UserTo userTo) {
+        return new User(null, userTo.getName(), userTo.getPassword(), Role.USER);
+    }
+
+    public static User updateFromTo(User user, UserTo userTo) {
+        user.setName(userTo.getName());
+        user.setPassword(userTo.getPassword());
+        return user;
     }
 }

@@ -1,5 +1,6 @@
 package com.alex.vis.voteApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -22,7 +24,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends AbstractBaseEntity implements HasId{
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
+public class User extends AbstractBaseEntity implements HasId {
 
     @Column(name = "name")
     private String name;
@@ -43,5 +46,12 @@ public class User extends AbstractBaseEntity implements HasId{
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Role> roles = new HashSet<>();
+
+    public User(Integer id, String name, String password, Role role, Role ... roles) {
+        super(id);
+        this.name = name;
+        this.password = password;
+        this.roles =  EnumSet.of(role, roles);
+    }
 
 }
