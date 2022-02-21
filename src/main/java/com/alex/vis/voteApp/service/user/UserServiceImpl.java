@@ -3,8 +3,7 @@ package com.alex.vis.voteApp.service.user;
 import com.alex.vis.voteApp.model.Role;
 import com.alex.vis.voteApp.model.User;
 import com.alex.vis.voteApp.repository.UserRepository;
-import com.alex.vis.voteApp.security.SecurityUser;
-import com.alex.vis.voteApp.to.UserTo;
+import com.alex.vis.voteApp.security.AuthorizedUser;
 import com.alex.vis.voteApp.util.UserUtil;
 import com.alex.vis.voteApp.validation.ValidationUtil;
 import lombok.RequiredArgsConstructor;
@@ -62,12 +61,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public void deleteByName(String name) {
         User user = getByName(name);
-
-        if (user == null) {
-            throw new UsernameNotFoundException(String.format("There is not user with name %s", name));
-        }
+        ValidationUtil.checkNull(user);
         delete(user.getId());
     }
+
+    @Override
+    @Transactional
+    public void updateByName(User newUser, String name) {
+        ValidationUtil.checkNull(newUser);
+        User oldUser = getByName(name);
+        ValidationUtil.checkNull(oldUser);
+
+        userRepository.save(UserUtil.prepareToUpdate(oldUser, newUser));
+    }
+
+    //TODO Refactor update/create methods.
 
     @Override
     public void update(User user, int id) {
@@ -86,8 +94,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByName(username).
-                orElseThrow(() -> new UsernameNotFoundException("User doesnt exists"));
+                orElseThrow(() ->  new UsernameNotFoundException("User " + username + " is not found"));
 
-        return SecurityUser.fromUser(user);
+        return new AuthorizedUser(user);
     }
 }

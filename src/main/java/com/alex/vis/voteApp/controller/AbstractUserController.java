@@ -42,6 +42,11 @@ public abstract class AbstractUserController {
         userService.update(user, id);
     }
 
+    protected void updateByName(User user, String name) {
+        log.info("update {} with name={}", user, name);
+        userService.updateByName(user, name);
+    }
+
     protected void enable(int id, boolean enabled) {
         log.info(enabled ? "enable {}" : "disable {}", id);
         userService.enable(id, enabled);

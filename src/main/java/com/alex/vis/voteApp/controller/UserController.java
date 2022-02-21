@@ -1,7 +1,6 @@
 package com.alex.vis.voteApp.controller;
 
 import com.alex.vis.voteApp.model.User;
-import com.alex.vis.voteApp.security.SecurityUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +35,10 @@ public class UserController extends  AbstractUserController{
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void enable(@PathVariable int id, @RequestParam boolean enabled) {
-        super.enable(id, enabled);
+    public void update(@RequestBody User user, @AuthenticationPrincipal UserDetails authUser) {
+        super.updateByName(user, authUser.getUsername());
     }
+
 }
