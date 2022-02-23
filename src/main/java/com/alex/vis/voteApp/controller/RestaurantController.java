@@ -34,7 +34,7 @@ public class RestaurantController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@AuthenticationPrincipal UserDetails authUser, @PathVariable int id) {
+    public void delete(@PathVariable int id) {
         restaurantService.delete(id);
     }
 

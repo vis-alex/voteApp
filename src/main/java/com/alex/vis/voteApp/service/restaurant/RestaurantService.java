@@ -1,7 +1,6 @@
 package com.alex.vis.voteApp.service.restaurant;
 
 import com.alex.vis.voteApp.model.Restaurant;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 

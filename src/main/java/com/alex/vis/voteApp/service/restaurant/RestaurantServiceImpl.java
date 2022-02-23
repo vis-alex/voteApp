@@ -26,20 +26,20 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Override
     public Restaurant create(Restaurant restaurant) {
-        ValidationUtil.checkRole();
+        ValidationUtil.checkRoleAdmin();
         ValidationUtil.checkNew(restaurant);
         return restaurantRepository.save(restaurant);
     }
 
     @Override
     public void delete(int id) {
-        ValidationUtil.checkRole();
+        ValidationUtil.checkRoleAdmin();
         restaurantRepository.deleteById(id);
     }
 
     @Override
     public void update(Restaurant restaurant, int id) {
-        ValidationUtil.checkRole();
+        ValidationUtil.checkRoleAdmin();
         ValidationUtil.assureIdConsistent(restaurant, id);
         restaurantRepository.save(restaurant);
     }

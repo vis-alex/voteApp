@@ -4,11 +4,7 @@ import com.alex.vis.voteApp.exception.IllegalRequestDataException;
 import com.alex.vis.voteApp.exception.NotFoundException;
 import com.alex.vis.voteApp.model.HasId;
 import com.alex.vis.voteApp.model.Role;
-import com.alex.vis.voteApp.model.User;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class ValidationUtil {
     public static void checkNew(HasId bean) {
@@ -25,15 +21,9 @@ public class ValidationUtil {
         }
     }
 
-    public static void checkRole() {
+    public static void checkRoleAdmin() {
         if (!SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(Role.ADMIN)) {
             throw new IllegalRequestDataException("Forbidden operation. You must have Role_ADMIN");
-        }
-    }
-
-    public static void checkNull(User user) {
-        if (user == null) {
-            throw new UsernameNotFoundException("User is null");
         }
     }
 

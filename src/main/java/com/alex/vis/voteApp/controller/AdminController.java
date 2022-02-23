@@ -19,27 +19,28 @@ public class AdminController extends AbstractUserController{
     @Override
     @GetMapping()
     public List<User> getAll() {
-        ValidationUtil.checkRole();
+        ValidationUtil.checkRoleAdmin();
         return super.getAll();
     }
 
     @Override
     @GetMapping("/{id}")
     public User get(@PathVariable int id) {
-        ValidationUtil.checkRole();
+        ValidationUtil.checkRoleAdmin();
         return super.get(id);
     }
 
     @Override
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
-        ValidationUtil.checkRole();
+        ValidationUtil.checkRoleAdmin();
         super.delete(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createWithLocation(@RequestBody User user) {
-        ValidationUtil.checkRole();
+        ValidationUtil.checkRoleAdmin();
 
         User created = super.create(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -52,7 +53,7 @@ public class AdminController extends AbstractUserController{
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody User user, @PathVariable int id) {
-        ValidationUtil.checkRole();
+        ValidationUtil.checkRoleAdmin();
         super.update(user, id);
     }
 
@@ -60,7 +61,7 @@ public class AdminController extends AbstractUserController{
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void enable(@PathVariable int id, @RequestParam boolean enabled) {
-        ValidationUtil.checkRole();
+        ValidationUtil.checkRoleAdmin();
         super.enable(id, enabled);
     }
 }

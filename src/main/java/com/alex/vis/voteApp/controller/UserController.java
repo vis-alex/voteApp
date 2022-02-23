@@ -23,6 +23,7 @@ public class UserController extends  AbstractUserController{
     }
 
     @DeleteMapping()
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@AuthenticationPrincipal AuthorizedUser authUser) {
         super.delete(authUser.getId());
     }
