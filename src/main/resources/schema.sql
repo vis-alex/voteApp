@@ -38,6 +38,8 @@ CREATE TABLE dishes
     restaurant_id    INTEGER                 NOT NULL,
     FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE
 );
+CREATE UNIQUE INDEX dishes_unique_restaurant_id_idx
+    ON dishes (name, restaurant_id);
 
 CREATE TABLE votes
 (

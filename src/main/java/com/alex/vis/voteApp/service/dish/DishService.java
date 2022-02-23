@@ -3,6 +3,7 @@ package com.alex.vis.voteApp.service.dish;
 import com.alex.vis.voteApp.model.Dish;
 
 import java.util.List;
+import java.util.Set;
 
 public interface DishService {
     List<Dish> getAll();
@@ -15,5 +16,5 @@ public interface DishService {
 
     void update(Dish dish, int id, Integer restaurantId);
 
-    List<Dish> getAllDishesForRestaurant(int restaurantId);
+    Set<Dish> getAllDishesForRestaurant(int restaurantId);
 }

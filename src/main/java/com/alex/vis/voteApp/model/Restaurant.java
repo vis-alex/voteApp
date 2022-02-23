@@ -18,7 +18,7 @@ public class Restaurant extends AbstractBaseEntity implements HasId{
     @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
     @OrderBy("name")
     @JsonManagedReference
     private Set<Dish> dishes;

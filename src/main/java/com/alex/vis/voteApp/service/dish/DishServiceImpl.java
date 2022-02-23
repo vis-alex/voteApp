@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +27,12 @@ public class DishServiceImpl implements DishService{
         return dishRepository.findAll();
     }
 
-    public List<Dish> getAllDishesForRestaurant(int restaurantId) {
+    @Transactional
+    public Set<Dish> getAllDishesForRestaurant(int restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new NotFoundException("Not found restaurant with id=" + restaurantId));
 
-        return dishRepository.getAllDishesForRestaurant(restaurantId);
+        return restaurant.getDishes();
     }
     //TODO fix this repository query
 
@@ -45,6 +47,7 @@ public class DishServiceImpl implements DishService{
         ValidationUtil.checkRoleAdmin();
         ValidationUtil.checkNew(dish);
         Restaurant restaurant = restaurantRepository.getById(restaurantId);
+        System.out.println(restaurant);
         ValidationUtil.checkNotFoundWithId(restaurant, restaurantId);
 
         dish.setRestaurant(restaurant);

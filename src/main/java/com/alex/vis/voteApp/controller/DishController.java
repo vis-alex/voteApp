@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,13 +26,7 @@ public class DishController {
 
     private final DishService dishService;
 
-    @GetMapping("/restaurant/{id}")
-    public List<Dish> getAllDishesForRestaurant(@PathVariable(value = "id") int restaurantId) {
-        log.info("get all dishes for restaurant {} ", restaurantId);
-        return dishService.getAllDishesForRestaurant(restaurantId);
-    }
-
-    @GetMapping("")
+    @GetMapping()
     public List<Dish> getAll() {
         log.info("get all dishes");
         return dishService.getAll();
@@ -41,6 +36,12 @@ public class DishController {
     public Dish get(@PathVariable int id) {
         log.info("get dish {} ", id);
         return dishService.get(id);
+    }
+
+    @GetMapping("/restaurant/{id}")
+    public Set<Dish> getAllDishesForRestaurant(@PathVariable(value = "id") int restaurantId) {
+        log.info("get all dishes for restaurant {} ", restaurantId);
+        return dishService.getAllDishesForRestaurant(restaurantId);
     }
 
     @DeleteMapping("/{id}")
@@ -67,11 +68,5 @@ public class DishController {
         log.info("update dish {} ", id);
         dishService.update(dish, id, restaurant_id);
     }
-
-
-
-
-
-
 
 }
