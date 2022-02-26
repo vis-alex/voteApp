@@ -43,6 +43,7 @@ public class DishController {
         log.info("get all dishes for restaurant {} ", restaurantId);
         return dishService.getAllDishesForRestaurant(restaurantId);
     }
+    //TODO Send sorting with query
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

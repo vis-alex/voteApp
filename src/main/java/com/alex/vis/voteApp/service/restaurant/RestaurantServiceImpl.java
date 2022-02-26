@@ -2,10 +2,12 @@ package com.alex.vis.voteApp.service.restaurant;
 
 import com.alex.vis.voteApp.model.Restaurant;
 import com.alex.vis.voteApp.repository.RestaurantRepository;
+import com.alex.vis.voteApp.repository.VoteRepository;
 import com.alex.vis.voteApp.validation.ValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -13,6 +15,7 @@ import java.util.List;
 public class RestaurantServiceImpl implements RestaurantService{
 
     private final RestaurantRepository restaurantRepository;
+    private final VoteRepository voteRepository;
 
     @Override
     public List<Restaurant> getAll() {
@@ -43,4 +46,10 @@ public class RestaurantServiceImpl implements RestaurantService{
         ValidationUtil.assureIdConsistent(restaurant, id);
         restaurantRepository.save(restaurant);
     }
+
+    @Override
+    public int getVoteCount(int id) {
+        return voteRepository.getVoteCount(id);
+    }
+    //TODO implement this
 }

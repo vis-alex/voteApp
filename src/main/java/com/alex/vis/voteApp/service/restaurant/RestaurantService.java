@@ -15,5 +15,7 @@ public interface RestaurantService {
 
     void update(Restaurant restaurant, int id);
 
+    int getVoteCount(int id);
+
     //TODO Solve problem N + 1 queries
 }
