@@ -6,17 +6,18 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.6.3</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.alex.vis</groupId>
 	<artifactId>voteApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>voteApp</name>
 	<description>Vote application for restaurants</description>
+
 	<properties>
 		<java.version>16</java.version>
-<!--		<jackson.version>2.12.4</jackson.version>-->
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -30,6 +31,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.hsqldb</groupId>
@@ -41,22 +46,6 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-
-<!--		<dependency>-->
-<!--			<groupId>com.fasterxml.jackson.core</groupId>-->
-<!--			<artifactId>jackson-databind</artifactId>-->
-<!--			<version>${jackson.version}</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>com.fasterxml.jackson.datatype</groupId>-->
-<!--			<artifactId>jackson-datatype-hibernate5</artifactId>-->
-<!--			<version>${jackson.version}</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>com.fasterxml.jackson.datatype</groupId>-->
-<!--			<artifactId>jackson-datatype-jsr310</artifactId>-->
-<!--			<version>${jackson.version}</version>-->
-<!--		</dependency>-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

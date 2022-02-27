@@ -1,10 +1,15 @@
 package com.alex.vis.voteApp.controller;
 
 import com.alex.vis.voteApp.model.User;
+import com.alex.vis.voteApp.service.user.UserService;
 import com.alex.vis.voteApp.validation.ValidationUtil;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -13,55 +18,60 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = AdminController.ADMIN_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class AdminController extends AbstractUserController{
+@RequiredArgsConstructor
+public class AdminController {
     static final String ADMIN_URL = "/admin/users";
 
-    @Override
+    protected final Logger log = LoggerFactory.getLogger(getClass());
+
+    private final UserService userService;
+
     @GetMapping()
     public List<User> getAll() {
+        log.info("getAll");
         ValidationUtil.checkRoleAdmin();
-        return super.getAll();
+        return userService.getAll();
     }
 
-    @Override
     @GetMapping("/{id}")
     public User get(@PathVariable int id) {
+        log.info("get {}", id);
         ValidationUtil.checkRoleAdmin();
-        return super.get(id);
+        return userService.get(id);
     }
 
-    @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
+        log.info("delete {}", id);
         ValidationUtil.checkRoleAdmin();
-        super.delete(id);
+        userService.delete(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> createWithLocation(@RequestBody User user) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public User create(@RequestBody User user) {
+        log.info("create {}", user);
         ValidationUtil.checkRoleAdmin();
-
-        User created = super.create(user);
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(ADMIN_URL + "/{id}")
-                .buildAndExpand(created.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(created);
+        Assert.notNull(user, "user must not be null");
+        ValidationUtil.checkNew(user);
+        return userService.create(user);
     }
 
-    @Override
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody User user, @PathVariable int id) {
+        log.info("update {} with id={}", user, id);
         ValidationUtil.checkRoleAdmin();
-        super.update(user, id);
+        Assert.notNull(user, "user must not be null");
+        userService.update(user, id);
     }
 
-    @Override
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void enable(@PathVariable int id, @RequestParam boolean enabled) {
+        log.info(enabled ? "enable {}" : "disable {}", id);
         ValidationUtil.checkRoleAdmin();
-        super.enable(id, enabled);
+        userService.enable(id, enabled);
     }
 }

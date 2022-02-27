@@ -7,6 +7,8 @@ import com.alex.vis.voteApp.repository.DishRepository;
 import com.alex.vis.voteApp.repository.RestaurantRepository;
 import com.alex.vis.voteApp.validation.ValidationUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -22,6 +24,7 @@ public class DishServiceImpl implements DishService{
     private final RestaurantRepository restaurantRepository;
 
     @Override
+    @Cacheable("dishes")
     public List<Dish> getAll() {
         ValidationUtil.checkRoleAdmin();
         return dishRepository.findAll();
@@ -42,6 +45,7 @@ public class DishServiceImpl implements DishService{
 
     @Override
     @Transactional
+    @CacheEvict(value = "dishes", allEntries = true)
     public Dish create(Dish dish, int restaurantId) {
         ValidationUtil.checkRoleAdmin();
         ValidationUtil.checkNew(dish);
@@ -54,6 +58,7 @@ public class DishServiceImpl implements DishService{
     }
 
     @Override
+    @CacheEvict(value = "dishes", allEntries = true)
     public void delete(int id) {
         ValidationUtil.checkRoleAdmin();
         ValidationUtil.checkNotFoundWithId(dishRepository.delete(id) != 0, id);
@@ -61,6 +66,7 @@ public class DishServiceImpl implements DishService{
 
     @Override
     @Transactional
+    @CacheEvict(value = "dishes", allEntries = true)
     public void update(Dish dish, int id, Integer restaurantId) {
         ValidationUtil.checkRoleAdmin();
         Assert.notNull(dish, "dish must not be null");

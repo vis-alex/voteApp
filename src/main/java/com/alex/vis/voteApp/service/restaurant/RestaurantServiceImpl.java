@@ -5,6 +5,8 @@ import com.alex.vis.voteApp.repository.RestaurantRepository;
 import com.alex.vis.voteApp.repository.VoteRepository;
 import com.alex.vis.voteApp.validation.ValidationUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     private final VoteRepository voteRepository;
 
     @Override
+    @Cacheable("restaurants")
     public List<Restaurant> getAll() {
         return restaurantRepository.findAll();
     }
@@ -27,6 +30,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
+    @CacheEvict(value = "restaurants", allEntries = true)
     public Restaurant create(Restaurant restaurant) {
         ValidationUtil.checkRoleAdmin();
         ValidationUtil.checkNew(restaurant);
@@ -34,12 +38,14 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void delete(int id) {
         ValidationUtil.checkRoleAdmin();
         ValidationUtil.checkNotFoundWithId(restaurantRepository.delete(id) != 0, id);
     }
 
     @Override
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void update(Restaurant restaurant, int id) {
         ValidationUtil.checkRoleAdmin();
         ValidationUtil.assureIdConsistent(restaurant, id);
