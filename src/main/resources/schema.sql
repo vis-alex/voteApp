@@ -47,8 +47,6 @@ CREATE TABLE votes
     restaurant_id INTEGER                 NOT NULL,
     date_time     TIMESTAMP default now() NOT NULL,
     CONSTRAINT user_vote_time_idx UNIQUE (user_id, date_time)
---     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
---     FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE
 );
 CREATE INDEX votes_restaurant_id_idx ON votes (restaurant_id);
--- CREATE UNIQUE INDEX votes_unique_datetime_idON votes (user_id, date_time);
+CREATE INDEX votes_user_id_idx ON votes (user_id);

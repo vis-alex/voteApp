@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -41,10 +40,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return ValidationUtil.checkNotFoundWithId(userRepository.getById(id), id);
     }
 
-    //TODO upgrade delete with custom queries in repo
     @Override
     public void delete(int id) {
-            userRepository.deleteById(id);
+        ValidationUtil.checkNotFoundWithId(userRepository.delete(id) != 0, id);
     }
 
     @Override

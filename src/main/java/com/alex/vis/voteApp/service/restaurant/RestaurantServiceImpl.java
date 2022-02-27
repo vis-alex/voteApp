@@ -7,7 +7,6 @@ import com.alex.vis.voteApp.validation.ValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -37,7 +36,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     @Override
     public void delete(int id) {
         ValidationUtil.checkRoleAdmin();
-        restaurantRepository.deleteById(id);
+        ValidationUtil.checkNotFoundWithId(restaurantRepository.delete(id) != 0, id);
     }
 
     @Override
@@ -51,5 +50,4 @@ public class RestaurantServiceImpl implements RestaurantService{
     public int getVoteCount(int id) {
         return voteRepository.getVoteCount(id);
     }
-    //TODO implement this
 }

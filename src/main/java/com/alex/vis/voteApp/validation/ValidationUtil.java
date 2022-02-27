@@ -41,6 +41,12 @@ public class ValidationUtil {
         return obj;
     }
 
+    public static void checkNotFoundWithId(boolean found, int id) {
+        if (!found) {
+            throw new NotFoundException("Not found entity wit id=" + id);
+        }
+    }
+
     public static void checkTime() {
         if (LocalTime.now().compareTo(endChangingVote) > 0) {
             throw new VoteException("You can change your vote before " + endChangingVote);

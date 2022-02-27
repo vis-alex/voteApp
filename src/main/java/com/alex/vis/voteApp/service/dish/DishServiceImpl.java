@@ -34,7 +34,6 @@ public class DishServiceImpl implements DishService{
 
         return restaurant.getDishes();
     }
-    //TODO fix this repository query
 
     @Override
     public Dish get(int id) {
@@ -57,7 +56,7 @@ public class DishServiceImpl implements DishService{
     @Override
     public void delete(int id) {
         ValidationUtil.checkRoleAdmin();
-        dishRepository.deleteById(id);
+        ValidationUtil.checkNotFoundWithId(dishRepository.delete(id) != 0, id);
     }
 
     @Override

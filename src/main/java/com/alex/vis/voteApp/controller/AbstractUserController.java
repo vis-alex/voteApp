@@ -55,7 +55,7 @@ public abstract class AbstractUserController {
         userService.update(user, id);
     }
 
-    public void update(UserTo userTo, int id) {
+    protected void update(UserTo userTo, int id) {
         log.info("update {} with id={}", userTo, id);
         Assert.notNull(userTo, "user must not be null");
         ValidationUtil.assureIdConsistent(userTo, id);

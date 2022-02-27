@@ -16,7 +16,7 @@ public interface VoteRepository extends JpaRepository<Vote, Integer> {
     @Query("SELECT COUNT(v) FROM Vote v WHERE v.restaurantId = ?1")
     int getVoteCount(int id);
 
-    @Query("SELECT v FROM Vote v WHERE v.userId = ?1 AND v.dateTime = ?2")
+    @Query("SELECT v FROM Vote v WHERE v.userId = ?1 AND v.dateTime >= ?2")
     Vote getVoteByUserId(int userId, LocalDateTime today);
 
 }

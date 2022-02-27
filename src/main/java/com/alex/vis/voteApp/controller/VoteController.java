@@ -7,7 +7,6 @@ import com.alex.vis.voteApp.validation.ValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,10 +48,4 @@ public class VoteController {
         return voteService.get(id);
     }
 
-//    @GetMapping("/user")
-//    public List<Vote> getForUser(@AuthenticationPrincipal AuthorizedUser user) {
-//        log.info("get all votes for user {} ", user.getId());
-//        ValidationUtil.checkRoleAdmin();
-//        return voteService.getForUser(user.getId());
-//    }
 }

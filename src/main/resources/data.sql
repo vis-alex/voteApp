@@ -26,3 +26,8 @@ VALUES ('Soup', 100, 100003),
        ('Water', 200, 100003),
        ('Bread', 300, 100004),
        ('Muss', 400, 100005);
+
+INSERT INTO votes (user_id, restaurant_id)
+VALUES (100000, 100003),
+--        (100001, 100004),
+       (100002, 100005);
