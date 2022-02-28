@@ -6,8 +6,13 @@ import com.alex.vis.voteApp.exception.VoteException;
 import com.alex.vis.voteApp.model.HasId;
 import com.alex.vis.voteApp.model.Role;
 import com.alex.vis.voteApp.model.Vote;
+import org.slf4j.Logger;
+import org.springframework.core.NestedExceptionUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalTime;
 
 public class ValidationUtil {
@@ -43,7 +48,7 @@ public class ValidationUtil {
 
     public static void checkNotFoundWithId(boolean found, int id) {
         if (!found) {
-            throw new NotFoundException("Not found entity wit id=" + id);
+            throw new NotFoundException("Not found entity with id=" + id);
         }
     }
 
@@ -63,5 +68,25 @@ public class ValidationUtil {
         if (vote == null) {
             throw new VoteException("Today no vote for user=" + userId);
         }
+    }
+
+    @NonNull
+    public static Throwable getRootCause(@NonNull Throwable t) {
+        Throwable rootCause = NestedExceptionUtils.getRootCause(t);
+        return rootCause != null ? rootCause : t;
+    }
+
+    public static String getMessage(Throwable e) {
+        return e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getClass().getName();
+    }
+
+    public static Throwable logAndGetRootCause(Logger log, HttpServletRequest req, Exception e, boolean logStackTrace, HttpStatus status) {
+        Throwable rootCause = ValidationUtil.getRootCause(e);
+        if (logStackTrace) {
+            log.error(status.name() + " at request " + req.getRequestURL(), rootCause);
+        } else {
+            log.warn("{} at request  {}: {}", status.name(), req.getRequestURL(), rootCause.toString());
+        }
+        return rootCause;
     }
 }

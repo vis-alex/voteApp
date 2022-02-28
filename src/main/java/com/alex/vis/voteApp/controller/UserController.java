@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = UserController.USERS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class UserController {
-    static final String USERS_URL = "/user";
+    static final String USERS_URL = "/profile/users";
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
 

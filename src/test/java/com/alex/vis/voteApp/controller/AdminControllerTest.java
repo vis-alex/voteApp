@@ -34,11 +34,11 @@ class AdminControllerTest {
     }
 
     @Test
-    void getMotFound() throws Exception{
+    void getNotFound() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.get(ADMIN_URL + NOT_FOUND)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNotFound());
     }
 
 }

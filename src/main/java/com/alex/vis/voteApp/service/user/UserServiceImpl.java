@@ -40,7 +40,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User get(int id) {
-        return ValidationUtil.checkNotFoundWithId(userRepository.getById(id), id);
+//        return ValidationUtil.checkNotFoundWithId(userRepository.getById(id), id);
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found entity with id=" + id));
     }
 
     @Override
