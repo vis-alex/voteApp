@@ -8,7 +8,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UserUtil {
 
     public static User prepareToSave(User user, PasswordEncoder passwordEncoder) {
-        user.getRoles().add(Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return user;
     }

@@ -15,6 +15,7 @@ CREATE TABLE users
     password VARCHAR(255)         NOT NULL,
     enabled  BOOLEAN DEFAULT TRUE NOT NULL
 );
+CREATE UNIQUE INDEX users_unique_name_idx ON users (name);
 
 CREATE TABLE user_roles
 (

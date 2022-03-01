@@ -54,4 +54,19 @@ public class User extends AbstractBaseEntity implements HasId {
         this.roles =  EnumSet.of(role, roles);
     }
 
+    public User(User user) {
+        this(user.getId(), user.getName(), user.getPassword(), user.isEnabled(), user.getRoles());
+    }
+
+    public User(Integer id, String name, String password,boolean enabled, Collection<Role> roles) {
+        super(id);
+        this.name = name;
+        this.password = password;
+        this.enabled = enabled;
+        setRoles(roles);
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
+    }
 }

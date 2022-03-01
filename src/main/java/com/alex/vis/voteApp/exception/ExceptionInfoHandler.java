@@ -3,9 +3,12 @@ package com.alex.vis.voteApp.exception;
 import com.alex.vis.voteApp.validation.ValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,6 +20,16 @@ public class ExceptionInfoHandler {
     @ResponseBody
     public ResponseEntity<ErrorInfo> handleError(HttpServletRequest req, NotFoundException e) {
         return logAndGetErrorInfo(req, e, false, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorInfo> conflict(HttpServletRequest req, DataIntegrityViolationException e) {
+        return logAndGetErrorInfo(req, e, true, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler({IllegalRequestDataException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
+    public ResponseEntity<ErrorInfo> illegalRequestDataError(HttpServletRequest req, Exception e) {
+        return logAndGetErrorInfo(req, e, false,  HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(Exception.class)
