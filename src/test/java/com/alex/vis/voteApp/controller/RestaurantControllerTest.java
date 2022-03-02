@@ -1,6 +1,10 @@
 package com.alex.vis.voteApp.controller;
 
+import com.alex.vis.voteApp.exception.NotFoundException;
+import com.alex.vis.voteApp.json.JsonUtil;
+import com.alex.vis.voteApp.model.Restaurant;
 import com.alex.vis.voteApp.service.restaurant.RestaurantService;
+import com.alex.vis.voteApp.test_data.RestaurantTestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -8,11 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.alex.vis.voteApp.TestUtil.userHttpBasic;
+import static com.alex.vis.voteApp.test_data.RestaurantTestData.*;
 import static com.alex.vis.voteApp.test_data.UserTestData.*;
 import static com.alex.vis.voteApp.test_data.UserTestData.admin;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,17 +38,61 @@ class RestaurantControllerTest {
     private RestaurantService restaurantService;
 
     @Test
-    void getAll() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.get(RESTAURANT_URL + ADMIN_ID)
+    void getAll() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(RESTAURANT_URL)
                         .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MATCHER.contentJson(admin));
+                .andExpect(RESTAURANT_MATCHER.contentJson(firstRestaurant, secondRestaurant, thirdRestaurant));
     }
 
     @Test
-    void get() {
+    void get() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.get(RESTAURANT_URL + FIRST_RESTAURANT_ID)
+                        .with(userHttpBasic(admin)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(RESTAURANT_MATCHER.contentJson(firstRestaurant));
+    }
+
+    @Test
+    void getNotFound() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.get(RESTAURANT_URL + NOT_FOUND)
+                        .with(userHttpBasic(admin)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void delete() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete(RESTAURANT_URL + FIRST_RESTAURANT_ID)
+                        .with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+        assertThrows(NotFoundException.class, () -> restaurantService.get(FIRST_RESTAURANT_ID));
+    }
+
+    @Test
+    void deleteNotFound() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete(RESTAURANT_URL + NOT_FOUND)
+                        .with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void deleteWithRoleUser() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete(RESTAURANT_URL + FIRST_RESTAURANT_ID)
+                        .with(userHttpBasic(user)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void getUnAuth() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(RESTAURANT_URL))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -49,14 +100,97 @@ class RestaurantControllerTest {
     }
 
     @Test
-    void delete() {
+    void create() throws Exception {
+        Restaurant newRestaurant = RestaurantTestData.getNew();
+
+        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(RESTAURANT_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(admin))
+                        .content(JsonUtil.writeValue(newRestaurant)))
+                .andExpect(status().isCreated());
+
+        Restaurant created = RESTAURANT_MATCHER.readFromJson(action);
+        int newId = created.id();
+        newRestaurant.setId(newId);
+        RESTAURANT_MATCHER.assertMatch(created, newRestaurant);
+        RESTAURANT_MATCHER.assertMatch(restaurantService.get(newId), newRestaurant);
     }
 
     @Test
-    void create() {
+    void createWithRoleUser() throws Exception {
+        Restaurant newRestaurant = RestaurantTestData.getNew();
+
+        mockMvc.perform(MockMvcRequestBuilders.post(RESTAURANT_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(user))
+                        .content(JsonUtil.writeValue(newRestaurant)))
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
-    void update() {
+    void createWithId() throws Exception {
+        Restaurant newRestaurant = RestaurantTestData.getNew();
+        newRestaurant.setId(1000);
+
+        mockMvc.perform(MockMvcRequestBuilders.post(RESTAURANT_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(user))
+                        .content(JsonUtil.writeValue(newRestaurant)))
+                .andExpect(status().isUnprocessableEntity());
     }
+
+    @Test
+    void createInvalidDish() throws Exception {
+        Restaurant newRestaurant = new Restaurant(11, "");
+
+        mockMvc.perform(MockMvcRequestBuilders.post(RESTAURANT_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(admin))
+                        .content(JsonUtil.writeValue(newRestaurant)))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void update() throws Exception {
+        Restaurant updated = RestaurantTestData.getUpdated();
+        mockMvc.perform(MockMvcRequestBuilders.put(RESTAURANT_URL + FIRST_RESTAURANT_ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(admin))
+                        .content(JsonUtil.writeValue(updated)))
+                .andExpect(status().isNoContent());
+
+        RESTAURANT_MATCHER.assertMatch(restaurantService.get(FIRST_RESTAURANT_ID), updated);
+    }
+
+    @Test
+    void updateRestaurantWithUnConsistentId() throws Exception {
+        Restaurant updated = RestaurantTestData.getUpdated();
+        updated.setId(SECOND_RESTAURANT_ID);
+        mockMvc.perform(MockMvcRequestBuilders.put(RESTAURANT_URL + FIRST_RESTAURANT_ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(admin))
+                        .content(JsonUtil.writeValue(updated)))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void updateWithRoleUser() throws Exception {
+        Restaurant updated = RestaurantTestData.getUpdated();
+        mockMvc.perform(MockMvcRequestBuilders.put(RESTAURANT_URL + FIRST_RESTAURANT_ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(user))
+                        .content(JsonUtil.writeValue(updated)))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void updateInvalid() throws Exception {
+        Restaurant invalid = new Restaurant(firstRestaurant.getId(), "");
+        mockMvc.perform(MockMvcRequestBuilders.put(RESTAURANT_URL + FIRST_RESTAURANT_ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(admin))
+                        .content(JsonUtil.writeValue(invalid)))
+                .andExpect(status().isUnprocessableEntity());
+    }
+    //TODO Find out the cause of 500 status
 }

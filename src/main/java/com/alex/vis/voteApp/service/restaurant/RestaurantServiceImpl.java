@@ -1,5 +1,6 @@
 package com.alex.vis.voteApp.service.restaurant;
 
+import com.alex.vis.voteApp.exception.NotFoundException;
 import com.alex.vis.voteApp.model.Restaurant;
 import com.alex.vis.voteApp.repository.RestaurantRepository;
 import com.alex.vis.voteApp.repository.VoteRepository;
@@ -26,7 +27,7 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Override
     public Restaurant get(int id) {
-        return restaurantRepository.findById(id).orElse(null);
+        return restaurantRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found restaurant with id=" + id));
     }
 
     @Override

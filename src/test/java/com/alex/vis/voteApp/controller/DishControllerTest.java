@@ -67,7 +67,13 @@ class DishControllerTest {
     }
 
     @Test
-    void getAllDishesForRestaurant() {
+    void getAllDishesForRestaurant() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(DISH_URL + "restaurant/" + FIRST_RESTAURANT_ID)
+                        .with(userHttpBasic(admin)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(DISH_MATCHER.contentJson(firstDish, secondDish));
     }
 
     @Test
@@ -183,6 +189,18 @@ class DishControllerTest {
     }
 
     @Test
+    void updateWithoutRestaurantId() throws Exception {
+        Dish updated = DishTestData.getUpdated();
+        mockMvc.perform(MockMvcRequestBuilders.put(DISH_URL + FIRST_DISH_ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(admin))
+                        .content(JsonUtil.writeValue(updated)))
+                .andExpect(status().isNoContent());
+
+        DISH_MATCHER.assertMatch(dishService.get(FIRST_DISH_ID), updated);
+    }
+
+    @Test
     void updateDishWithUnConsistentId() throws Exception {
         Dish updated = DishTestData.getUpdated();
         updated.setId(SECOND_DISH_ID);
@@ -213,6 +231,17 @@ class DishControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(userHttpBasic(user))
                         .content(JsonUtil.writeValue(updated)))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void updateInvalid() throws Exception {
+        Dish invalid = new Dish(firstDish.getId(), "", -5);
+        mockMvc.perform(MockMvcRequestBuilders.put(DISH_URL + FIRST_DISH_ID)
+                        .param("restaurant_id", String.valueOf(FIRST_DISH_ID))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(admin))
+                        .content(JsonUtil.writeValue(invalid)))
                 .andExpect(status().isUnprocessableEntity());
     }
 

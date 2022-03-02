@@ -40,7 +40,7 @@ public class DishServiceImpl implements DishService{
 
     @Override
     public Dish get(int id) {
-        return dishRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found entity with id=" + id));
+        return dishRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found dish with id=" + id));
     }
 
     @Override
