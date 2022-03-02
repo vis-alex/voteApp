@@ -24,6 +24,7 @@ CREATE TABLE user_roles
     CONSTRAINT user_roles_idx UNIQUE (user_id, role),
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
+CREATE INDEX user_roles_unique_id_idx ON user_roles (user_id);
 
 CREATE TABLE restaurants
 (

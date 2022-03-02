@@ -1,5 +1,6 @@
-package com.alex.vis.voteApp;
+package com.alex.vis.voteApp.test_data;
 
+import com.alex.vis.voteApp.MatcherFactory;
 import com.alex.vis.voteApp.json.JsonUtil;
 import com.alex.vis.voteApp.model.Role;
 import com.alex.vis.voteApp.model.User;

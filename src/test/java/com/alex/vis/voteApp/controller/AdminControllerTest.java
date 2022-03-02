@@ -1,7 +1,7 @@
 package com.alex.vis.voteApp.controller;
 
 
-import com.alex.vis.voteApp.UserTestData;
+import com.alex.vis.voteApp.test_data.UserTestData;
 import com.alex.vis.voteApp.exception.NotFoundException;
 import com.alex.vis.voteApp.model.Role;
 import com.alex.vis.voteApp.model.User;
@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.alex.vis.voteApp.UserTestData.*;
+import static com.alex.vis.voteApp.test_data.UserTestData.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -41,7 +41,7 @@ class AdminControllerTest {
     @Test
     void get() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.get(ADMIN_URL + ADMIN_ID)
-                .with(userHttpBasic(admin)))
+                        .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -161,5 +161,29 @@ class AdminControllerTest {
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
+
+    @Test
+    void createInvalid() throws Exception {
+        User invalid = new User(null, null, "", Role.USER, Role.ADMIN);
+        mockMvc.perform(MockMvcRequestBuilders.post(ADMIN_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(jsonWithPassword(invalid, "newPass")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void updateInvalid() throws Exception {
+        User invalid = new User(user);
+        invalid.setName("");
+        mockMvc.perform(MockMvcRequestBuilders.put(ADMIN_URL + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(jsonWithPassword(invalid, "password")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+    //TODO Html
 
 }

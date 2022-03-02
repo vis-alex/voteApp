@@ -40,17 +40,17 @@ public class DishServiceImpl implements DishService{
 
     @Override
     public Dish get(int id) {
-        return ValidationUtil.checkNotFoundWithId(dishRepository.getById(id), id);
+        return dishRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found entity with id=" + id));
     }
 
     @Override
     @Transactional
     @CacheEvict(value = "dishes", allEntries = true)
     public Dish create(Dish dish, int restaurantId) {
+        Assert.notNull(dish, "dish must not be null");
         ValidationUtil.checkRoleAdmin();
         ValidationUtil.checkNew(dish);
         Restaurant restaurant = restaurantRepository.getById(restaurantId);
-        System.out.println(restaurant);
         ValidationUtil.checkNotFoundWithId(restaurant, restaurantId);
 
         dish.setRestaurant(restaurant);

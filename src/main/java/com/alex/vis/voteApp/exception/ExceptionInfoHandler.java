@@ -6,9 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,14 +21,10 @@ public class ExceptionInfoHandler {
         return logAndGetErrorInfo(req, e, false, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorInfo> conflict(HttpServletRequest req, DataIntegrityViolationException e) {
-        return logAndGetErrorInfo(req, e, true, HttpStatus.UNPROCESSABLE_ENTITY);
-    }
-
-    @ExceptionHandler({IllegalRequestDataException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
-    public ResponseEntity<ErrorInfo> illegalRequestDataError(HttpServletRequest req, Exception e) {
-        return logAndGetErrorInfo(req, e, false,  HttpStatus.UNPROCESSABLE_ENTITY);
+    @ExceptionHandler({IllegalRequestDataException.class, DataIntegrityViolationException.class, MethodArgumentNotValidException.class})
+    @ResponseBody
+    public ResponseEntity<ErrorInfo> conflict(HttpServletRequest req, Exception e) {
+        return logAndGetErrorInfo(req, e, true,  HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(Exception.class)

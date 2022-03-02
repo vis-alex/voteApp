@@ -2,6 +2,7 @@ package com.alex.vis.voteApp.controller;
 
 import com.alex.vis.voteApp.model.Dish;
 import com.alex.vis.voteApp.service.dish.DishService;
+import com.sun.istack.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Set;
@@ -53,7 +55,7 @@ public class DishController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> create(@RequestBody Dish dish, @RequestParam int restaurant_id) {
+    public ResponseEntity<Dish> create(@Valid @RequestBody Dish dish, @RequestParam int restaurant_id) {
         Dish created = dishService.create(dish, restaurant_id);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -65,7 +67,7 @@ public class DishController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Dish dish, @PathVariable int id, @RequestParam(required = false) Integer restaurant_id) {
+    public void update(@Valid @RequestBody Dish dish, @PathVariable int id, @RequestParam(required = false) Integer restaurant_id) {
         log.info("update dish {} ", id);
         dishService.update(dish, id, restaurant_id);
     }

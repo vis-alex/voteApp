@@ -2,16 +2,15 @@ package com.alex.vis.voteApp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -24,13 +23,19 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(callSuper = true)
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class User extends AbstractBaseEntity implements HasId {
+    //TODO add registered field
 
     @Column(name = "name")
+    @NotBlank
+    @Size(min = 2, max = 100)
     private String name;
 
     @Column(name = "password")
+    @NotBlank
+    @Size(min = 5, max = 32)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 

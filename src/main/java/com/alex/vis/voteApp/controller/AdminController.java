@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -47,7 +48,7 @@ public class AdminController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public User create(@RequestBody User user) {
+    public User create(@Valid @RequestBody User user) {
         log.info("create {}", user);
         ValidationUtil.checkRoleAdmin();
         Assert.notNull(user, "user must not be null");
@@ -57,7 +58,7 @@ public class AdminController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody User user, @PathVariable int id) {
+    public void update(@Valid @RequestBody User user, @PathVariable int id) {
         log.info("update {} with id={}", user, id);
         ValidationUtil.checkRoleAdmin();
         Assert.notNull(user, "user must not be null");

@@ -1,10 +1,7 @@
 package com.alex.vis.voteApp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(callSuper = true)
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Vote extends AbstractBaseEntity{
 
