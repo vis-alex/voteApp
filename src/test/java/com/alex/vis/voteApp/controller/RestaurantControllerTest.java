@@ -192,5 +192,4 @@ class RestaurantControllerTest {
                         .content(JsonUtil.writeValue(invalid)))
                 .andExpect(status().isUnprocessableEntity());
     }
-    //TODO Find out the cause of 500 status
 }

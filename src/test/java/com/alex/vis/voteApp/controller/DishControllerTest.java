@@ -238,7 +238,7 @@ class DishControllerTest {
     void updateInvalid() throws Exception {
         Dish invalid = new Dish(firstDish.getId(), "", -5);
         mockMvc.perform(MockMvcRequestBuilders.put(DISH_URL + FIRST_DISH_ID)
-                        .param("restaurant_id", String.valueOf(FIRST_DISH_ID))
+                        .param("restaurant_id", String.valueOf(FIRST_RESTAURANT_ID))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(userHttpBasic(admin))
                         .content(JsonUtil.writeValue(invalid)))
