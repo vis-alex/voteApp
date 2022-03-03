@@ -22,10 +22,17 @@ public class ExceptionInfoHandler {
         return logAndGetErrorInfo(req, e, false, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({IllegalRequestDataException.class, DataIntegrityViolationException.class, MethodArgumentNotValidException.class})
+    @ExceptionHandler({IllegalRequestDataException.class, DataIntegrityViolationException.class,
+            MethodArgumentNotValidException.class})
     @ResponseBody
     public ResponseEntity<ErrorInfo> conflict(HttpServletRequest req, Exception e) {
         return logAndGetErrorInfo(req, e, true,  HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(VoteException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorInfo> voteConstraintError(HttpServletRequest req, Exception e) {
+        return logAndGetErrorInfo(req, e, true, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(Exception.class)

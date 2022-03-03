@@ -7,6 +7,7 @@ import com.alex.vis.voteApp.validation.ValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +24,14 @@ public class VoteController {
     private final VoteService voteService;
 
     @PostMapping(value = "/{id}")
-    public void vote(@AuthenticationPrincipal AuthorizedUser authUser, @PathVariable int id) {
-        log.info("vote for restaurant {} by user {}", id, authUser.getId());
-        voteService.vote(authUser.getId(), id);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Vote vote(@AuthenticationPrincipal AuthorizedUser authUser, @PathVariable(value = "id") int restaurantId) {
+        log.info("vote for restaurant {} by user {}", restaurantId, authUser.getId());
+        return voteService.vote(authUser.getId(), restaurantId);
     }
 
     @PostMapping(value = "/devote/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void devote(@AuthenticationPrincipal AuthorizedUser authUser, @PathVariable int id) {
         log.info("devote for restaurant {} by user {}", id, authUser.getId());
         voteService.devote(authUser.getId(), id);

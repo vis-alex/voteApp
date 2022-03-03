@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface VoteService {
 
-    void vote(int userId, int restaurantId);
+    Vote vote(int userId, int restaurantId);
 
     void devote(int userId, int restaurantId);
 

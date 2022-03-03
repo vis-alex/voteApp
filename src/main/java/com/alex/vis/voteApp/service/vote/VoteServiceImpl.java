@@ -1,5 +1,6 @@
 package com.alex.vis.voteApp.service.vote;
 
+import com.alex.vis.voteApp.exception.NotFoundException;
 import com.alex.vis.voteApp.model.Vote;
 import com.alex.vis.voteApp.repository.RestaurantRepository;
 import com.alex.vis.voteApp.repository.VoteRepository;
@@ -22,18 +23,17 @@ public class VoteServiceImpl implements VoteService {
 
     @Transactional
     @Override
-    public void vote(int userId, int restaurantId) {
-        ValidationUtil.checkNotFoundWithId(restaurantRepository.getById(restaurantId), restaurantId);
+    public Vote vote(int userId, int restaurantId) {
+        restaurantRepository.findById(restaurantId).orElseThrow(() -> new NotFoundException("Not found entity wit id=" + restaurantId));
         ValidationUtil.checkVote(getUserVote(userId));
-        voteRepository.save(new Vote(userId, restaurantId, LocalDateTime.now()));
+        return voteRepository.save(new Vote(userId, restaurantId));
     }
-    //TODO check  user vote today
 
     @Transactional
     @Override
     public void devote(int userId, int restaurantId) {
         ValidationUtil.checkTime();
-        ValidationUtil.checkNotFoundWithId(restaurantRepository.getById(restaurantId), restaurantId);
+        restaurantRepository.findById(restaurantId).orElseThrow(() -> new NotFoundException("Not found entity wit id=" + restaurantId));
         Vote vote = getUserVote(userId);
         ValidationUtil.checkDevote(vote, userId);
         voteRepository.delete(vote);
@@ -55,8 +55,8 @@ public class VoteServiceImpl implements VoteService {
     public Vote getUserVote(int userId) {
         LocalDate nowDate = LocalDate.now();
         LocalTime zeroTime = LocalTime.MIDNIGHT;
-        LocalDateTime today = LocalDateTime.of(nowDate, zeroTime);
-        return voteRepository.getVoteByUserId(userId, today);
+        LocalDateTime startDay = LocalDateTime.of(nowDate, zeroTime);
+        return voteRepository.getVoteByUserId(userId, startDay, LocalDateTime.now());
     }
 
 }

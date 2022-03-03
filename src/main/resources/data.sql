@@ -27,7 +27,6 @@ VALUES ('Soup', 100, 100003),
        ('Bread', 300, 100004),
        ('Muss', 400, 100005);
 
-INSERT INTO votes (user_id, restaurant_id)
-VALUES (100000, 100003),
---        (100001, 100004),
-       (100002, 100005);
+INSERT INTO votes (user_id, restaurant_id, date_time)
+VALUES (100000, 100003, '9999-12-31 00:00:00'),
+       (100001, 100004, '9999-12-31 00:00:00');

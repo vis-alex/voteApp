@@ -17,7 +17,6 @@ import java.time.LocalTime;
 
 public class ValidationUtil {
     public static LocalTime endChangingVote = LocalTime.of(11, 0);
-    public static LocalTime updateMenuTime = LocalTime.of(1, 0);
 
     public static void checkNew(HasId bean) {
         if (!bean.isNew()) {
@@ -74,10 +73,6 @@ public class ValidationUtil {
     public static Throwable getRootCause(@NonNull Throwable t) {
         Throwable rootCause = NestedExceptionUtils.getRootCause(t);
         return rootCause != null ? rootCause : t;
-    }
-
-    public static String getMessage(Throwable e) {
-        return e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getClass().getName();
     }
 
     public static Throwable logAndGetRootCause(Logger log, HttpServletRequest req, Exception e, boolean logStackTrace, HttpStatus status) {

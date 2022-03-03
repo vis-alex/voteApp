@@ -94,10 +94,17 @@ class RestaurantControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(RESTAURANT_URL))
                 .andExpect(status().isUnauthorized());
     }
-
-    @Test
-    void getVoteCount() {
-    }
+//
+//    @Test
+//    void getVoteCount() {
+//        mockMvc.perform(MockMvcRequestBuilders.get(RESTAURANT_URL)
+//                        .with(userHttpBasic(admin)))
+//                .andExpect(status().isOk())
+//                .andDo(print())
+//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+//                .andExpect(RESTAURANT_MATCHER.contentJson(firstRestaurant, secondRestaurant, thirdRestaurant));
+//    }
+    //TODO implement getVoteCountTest
 
     @Test
     void create() throws Exception {
@@ -140,7 +147,7 @@ class RestaurantControllerTest {
     }
 
     @Test
-    void createInvalidDish() throws Exception {
+    void createInvalid() throws Exception {
         Restaurant newRestaurant = new Restaurant(11, "");
 
         mockMvc.perform(MockMvcRequestBuilders.post(RESTAURANT_URL)
@@ -163,7 +170,7 @@ class RestaurantControllerTest {
     }
 
     @Test
-    void updateRestaurantWithUnConsistentId() throws Exception {
+    void updateWithUnConsistentId() throws Exception {
         Restaurant updated = RestaurantTestData.getUpdated();
         updated.setId(SECOND_RESTAURANT_ID);
         mockMvc.perform(MockMvcRequestBuilders.put(RESTAURANT_URL + FIRST_RESTAURANT_ID)
