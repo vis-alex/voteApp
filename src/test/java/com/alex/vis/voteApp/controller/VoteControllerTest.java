@@ -1,7 +1,5 @@
 package com.alex.vis.voteApp.controller;
 
-import com.alex.vis.voteApp.json.JsonUtil;
-import com.alex.vis.voteApp.model.Restaurant;
 import com.alex.vis.voteApp.model.Vote;
 import com.alex.vis.voteApp.service.vote.VoteService;
 import com.alex.vis.voteApp.validation.ValidationUtil;
@@ -34,9 +32,6 @@ class VoteControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private VoteService voteService;
 
     @Test
     void vote() throws Exception {

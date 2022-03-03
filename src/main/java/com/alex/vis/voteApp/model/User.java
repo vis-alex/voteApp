@@ -35,7 +35,7 @@ public class User extends AbstractBaseEntity implements HasId {
 
     @Column(name = "password")
     @NotBlank
-    @Size(min = 5, max = 32)
+    @Size(min = 5, max = 100)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 

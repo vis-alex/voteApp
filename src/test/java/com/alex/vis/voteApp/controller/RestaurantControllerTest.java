@@ -94,17 +94,15 @@ class RestaurantControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(RESTAURANT_URL))
                 .andExpect(status().isUnauthorized());
     }
-//
-//    @Test
-//    void getVoteCount() {
-//        mockMvc.perform(MockMvcRequestBuilders.get(RESTAURANT_URL)
-//                        .with(userHttpBasic(admin)))
-//                .andExpect(status().isOk())
-//                .andDo(print())
-//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-//                .andExpect(RESTAURANT_MATCHER.contentJson(firstRestaurant, secondRestaurant, thirdRestaurant));
-//    }
-    //TODO implement getVoteCountTest
+
+    @Test
+    void getVoteCount() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(RESTAURANT_URL + FIRST_RESTAURANT_ID + "/count")
+                        .with(userHttpBasic(admin)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().string("1"));
+    }
 
     @Test
     void create() throws Exception {
