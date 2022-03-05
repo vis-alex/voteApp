@@ -161,7 +161,6 @@ class DishControllerTest {
                         .content(JsonUtil.writeValue(newDish)))
                 .andExpect(status().isUnprocessableEntity());
     }
-//TODO CHECK HERE status not found against unprocessable entity
 
     @Test
     void createInvalidDish() throws Exception {

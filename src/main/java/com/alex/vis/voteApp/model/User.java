@@ -26,7 +26,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class User extends AbstractBaseEntity implements HasId {
-    //TODO add registered field
+//    TODO add registered field
 
     @Column(name = "name")
     @NotBlank
