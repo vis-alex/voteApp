@@ -3,6 +3,11 @@ package com.alex.vis.voteApp.controller;
 import com.alex.vis.voteApp.model.User;
 import com.alex.vis.voteApp.service.user.UserService;
 import com.alex.vis.voteApp.validation.ValidationUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = AdminController.ADMIN_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
+@Tag(name="Admin")
 public class AdminController {
     static final String ADMIN_URL = "/admin/users";
 
@@ -25,6 +31,10 @@ public class AdminController {
     private final UserService userService;
 
     @GetMapping()
+    @Operation(summary = "Get all users", responses = {
+            @ApiResponse(description = "Get users success", responseCode = "200",
+                   content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = User.class)))
+    })
     public List<User> getAll() {
         log.info("getAll");
         ValidationUtil.checkRoleAdmin();
@@ -32,6 +42,11 @@ public class AdminController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get user", responses = {
+            @ApiResponse(description = "Get user success", responseCode = "200",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = User.class))),
+            @ApiResponse(description = "User not found", responseCode = "404", content = @Content)
+    })
     public User get(@PathVariable int id) {
         log.info("get {}", id);
         ValidationUtil.checkRoleAdmin();
