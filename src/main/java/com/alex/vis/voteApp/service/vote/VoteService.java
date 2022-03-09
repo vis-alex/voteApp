@@ -8,7 +8,7 @@ public interface VoteService {
 
     Vote vote(int userId, int restaurantId);
 
-    void devote(int userId, int restaurantId);
+    void unVote(int userId, int restaurantId);
 
     List<Vote> getAll();
 

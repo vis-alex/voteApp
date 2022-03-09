@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Tag(name="Profile")
 public class ProfileController {
-    static final String USERS_URL = "/profile/users";
+    static final String USERS_URL = "/api/profile/users";
 
     private final UserService userService;
 

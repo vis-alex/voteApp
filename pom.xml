@@ -16,6 +16,7 @@
 
 	<properties>
 		<java.version>16</java.version>
+		<springdoc.version>1.5.12</springdoc.version>
 	</properties>
 
 	<dependencies>
@@ -43,7 +44,12 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.5.12</version>
+			<version>${springdoc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-security</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
 
 

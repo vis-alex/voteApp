@@ -24,7 +24,7 @@ import java.util.List;
 @Slf4j
 @Tag(name="Admin")
 public class AdminController {
-    static final String ADMIN_URL = "/admin/users";
+    static final String ADMIN_URL = "/api/admin/users";
 
     private final UserService userService;
 

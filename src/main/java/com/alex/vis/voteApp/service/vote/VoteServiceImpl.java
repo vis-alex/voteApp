@@ -31,7 +31,7 @@ public class VoteServiceImpl implements VoteService {
 
     @Transactional
     @Override
-    public void devote(int userId, int restaurantId) {
+    public void unVote(int userId, int restaurantId) {
         ValidationUtil.checkTime();
         restaurantRepository.findById(restaurantId).orElseThrow(() -> new NotFoundException("Not found entity wit id=" + restaurantId));
         Vote vote = getUserVote(userId);

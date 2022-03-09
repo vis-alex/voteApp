@@ -105,6 +105,15 @@ class RestaurantControllerTest {
     }
 
     @Test
+    void getVoteCountZero() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(RESTAURANT_URL + THIRD_RESTAURANT_ID + "/count")
+                        .with(userHttpBasic(admin)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().string("0"));
+    }
+
+    @Test
     void create() throws Exception {
         Restaurant newRestaurant = RestaurantTestData.getNew();
 

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     @Override
     @CacheEvict(value = "restaurants", allEntries = true)
     public Restaurant create(Restaurant restaurant) {
+        Assert.notNull(restaurant, "restaurant must not be null");
         ValidationUtil.checkRoleAdmin();
         ValidationUtil.checkNew(restaurant);
         return restaurantRepository.save(restaurant);
@@ -48,6 +50,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     @Override
     @CacheEvict(value = "restaurants", allEntries = true)
     public void update(Restaurant restaurant, int id) {
+        Assert.notNull(restaurant, "restaurant must not be null");
         ValidationUtil.checkRoleAdmin();
         ValidationUtil.assureIdConsistent(restaurant, id);
         restaurantRepository.save(restaurant);

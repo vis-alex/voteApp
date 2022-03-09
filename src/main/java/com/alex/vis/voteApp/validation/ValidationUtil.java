@@ -65,7 +65,7 @@ public class ValidationUtil {
 
     public static void checkDevote(Vote vote, int userId) {
         if (vote == null) {
-            throw new VoteException("Today no vote for user=" + userId);
+            throw new VoteException("Today user="  + userId + "have not voting");
         }
     }
 
