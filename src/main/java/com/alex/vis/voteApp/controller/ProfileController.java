@@ -6,9 +6,13 @@ import com.alex.vis.voteApp.service.user.UserService;
 import com.alex.vis.voteApp.to.UserTo;
 import com.alex.vis.voteApp.util.UserUtil;
 import com.alex.vis.voteApp.validation.ValidationUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,21 +20,29 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = UserController.USERS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = ProfileController.USERS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-public class UserController {
+@Slf4j
+@Tag(name="Profile")
+public class ProfileController {
     static final String USERS_URL = "/profile/users";
-
-    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     private final UserService userService;
 
+    @Operation(summary = "Get profile", responses = {
+            @ApiResponse(description = "Get profile success", responseCode = "200",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = User.class))),
+            @ApiResponse(description = "User not found", responseCode = "404", content = @Content)
+    })
     @GetMapping
     public User get(@AuthenticationPrincipal AuthorizedUser authUser) {
         log.info("get {}", authUser.getId());
         return userService.get(authUser.getId());
     }
 
+    @Operation(summary = "Delete profile", responses = {
+            @ApiResponse(description = "Delete profile success", responseCode = "204", content = @Content)
+    })
     @DeleteMapping()
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@AuthenticationPrincipal AuthorizedUser authUser) {
@@ -38,6 +50,11 @@ public class UserController {
         userService.delete(authUser.getId());
     }
 
+    @Operation(summary = "Register profile", responses = {
+            @ApiResponse(description = "Register profile success", responseCode = "201",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = User.class))),
+            @ApiResponse(description = "User is null or user_id is not null", responseCode = "422", content = @Content)
+    })
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public User register(@RequestBody UserTo userTo) {
@@ -47,6 +64,10 @@ public class UserController {
         return userService.create(UserUtil.createNewFromTo(userTo));
     }
 
+    @Operation(summary = "Update profile", responses = {
+            @ApiResponse(description = "Update profile success", responseCode = "204", content = @Content),
+            @ApiResponse(description = "UserTo is null or user_id is not consistent ", responseCode = "422", content = @Content)
+    })
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody UserTo userTo, @AuthenticationPrincipal AuthorizedUser authUser) {
