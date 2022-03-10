@@ -3,6 +3,7 @@ package com.alex.vis.voteApp.controller;
 import com.alex.vis.voteApp.exception.NotFoundException;
 import com.alex.vis.voteApp.json.JsonUtil;
 import com.alex.vis.voteApp.model.Restaurant;
+import com.alex.vis.voteApp.model.User;
 import com.alex.vis.voteApp.service.restaurant.RestaurantService;
 import com.alex.vis.voteApp.test_data.RestaurantTestData;
 import org.junit.jupiter.api.Test;
@@ -204,6 +205,19 @@ class RestaurantControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(userHttpBasic(admin))
                         .content(JsonUtil.writeValue(invalid)))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void updateHtmlUnsafe() throws Exception {
+        Restaurant updated = new Restaurant();
+        updated.setName("<script>alert(123)</script>");
+
+        mockMvc.perform(MockMvcRequestBuilders.put(RESTAURANT_URL + FIRST_RESTAURANT_ID)
+                        .with(userHttpBasic(admin))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.writeValue(updated)))
+                .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
 }

@@ -1,5 +1,6 @@
 package com.alex.vis.voteApp.model;
 
+import com.alex.vis.voteApp.validation.NoHtml;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -26,11 +27,11 @@ import java.util.Set;
 @ToString(callSuper = true)
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class User extends AbstractBaseEntity implements HasId {
-//    TODO add registered field
 
     @Column(name = "name")
     @NotBlank
     @Size(min = 2, max = 100)
+    @NoHtml
     private String name;
 
     @Column(name = "password")

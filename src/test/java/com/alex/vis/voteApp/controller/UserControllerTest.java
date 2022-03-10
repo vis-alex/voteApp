@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -184,6 +185,17 @@ class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
-    //TODO Html
 
+    @Test
+    void updateHtmlUnsafe() throws Exception {
+        User updated = new User(user);
+        updated.setName("<script>alert(123)</script>");
+
+        mockMvc.perform(MockMvcRequestBuilders.put(ADMIN_URL + USER_ID)
+                        .with(userHttpBasic(admin))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonWithPassword(updated, "password")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
 }
