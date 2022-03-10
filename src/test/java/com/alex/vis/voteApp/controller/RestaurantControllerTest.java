@@ -86,7 +86,7 @@ class RestaurantControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(RESTAURANT_URL + FIRST_RESTAURANT_ID)
                         .with(userHttpBasic(user)))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -138,7 +138,7 @@ class RestaurantControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(userHttpBasic(user))
                         .content(JsonUtil.writeValue(newRestaurant)))
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -148,7 +148,7 @@ class RestaurantControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post(RESTAURANT_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(userHttpBasic(user))
+                        .with(userHttpBasic(admin))
                         .content(JsonUtil.writeValue(newRestaurant)))
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -194,7 +194,7 @@ class RestaurantControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(userHttpBasic(user))
                         .content(JsonUtil.writeValue(updated)))
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isForbidden());
     }
 
     @Test

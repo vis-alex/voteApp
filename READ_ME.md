@@ -3,9 +3,10 @@
 What is it?
 -----------
 
-This application is created for users possibility to vote for restaurant, where they will 
+This Full Rest application is created for users possibility to vote for restaurant, where they will 
 have lunch today. So visitors of application can decide which restaurant they`ll visit today 
-based on votes for every restaurant.
+based on votes for every restaurant. In development was used next technologies: REST, Spring MVC, 
+SpringDataJpa, HSQL DB, Spring Security, Spring Cache, Spring Validation, Jackson.
 
 The Latest Version
 ------------------

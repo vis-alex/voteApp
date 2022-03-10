@@ -29,7 +29,7 @@ import static com.alex.vis.voteApp.TestUtil.*;
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class AdminControllerTest {
+class UserControllerTest {
     private static final String ADMIN_URL = AdminController.ADMIN_URL + "/";
 
     @Autowired
@@ -83,7 +83,7 @@ class AdminControllerTest {
     void getForbiddenAccessWithRoleUser() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(ADMIN_URL)
                 .with(userHttpBasic(user)))
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isForbidden());
     }
 
     @Test

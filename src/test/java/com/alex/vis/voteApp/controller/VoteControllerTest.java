@@ -78,18 +78,17 @@ class VoteControllerTest {
                 .andExpect(status().isCreated());
 
         if (LocalTime.now().isAfter(ValidationUtil.endChangingVote)) {
-            mockMvc.perform(MockMvcRequestBuilders.post(VOTE_URL + "devote/" + FIRST_RESTAURANT_ID)
+            mockMvc.perform(MockMvcRequestBuilders.post(VOTE_URL + "unvote/" + FIRST_RESTAURANT_ID)
                             .contentType(MediaType.APPLICATION_JSON)
                             .with(userHttpBasic(user)))
                     .andExpect(status().isForbidden());
         } else {
-            mockMvc.perform(MockMvcRequestBuilders.post(VOTE_URL + "devote/" + FIRST_RESTAURANT_ID)
+            mockMvc.perform(MockMvcRequestBuilders.post(VOTE_URL + "unvote/" + FIRST_RESTAURANT_ID)
                             .contentType(MediaType.APPLICATION_JSON)
                             .with(userHttpBasic(user)))
                     .andExpect(status().isNoContent());
         }
-
-    }
+    }//TODO Fix this datetime
 
     @Test
     void getAll() throws Exception {
@@ -105,9 +104,7 @@ class VoteControllerTest {
     void getAllWithRoleUser() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(VOTE_URL)
                         .with(userHttpBasic(user)))
-                .andExpect(status().isUnprocessableEntity())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -124,8 +121,6 @@ class VoteControllerTest {
     void getWithRoleUser() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(VOTE_URL + FIRST_VOTE_ID)
                         .with(userHttpBasic(user)))
-                .andExpect(status().isUnprocessableEntity())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+                .andExpect(status().isForbidden());
     }
 }

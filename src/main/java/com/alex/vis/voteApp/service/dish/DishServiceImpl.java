@@ -49,7 +49,6 @@ public class DishServiceImpl implements DishService{
     @CacheEvict(value = "dishes", allEntries = true)
     public Dish create(Dish dish, int restaurantId) {
         Assert.notNull(dish, "dish must not be null");
-        ValidationUtil.checkRoleAdmin();
         ValidationUtil.checkNew(dish);
         Restaurant restaurant = restaurantRepository.getById(restaurantId);
         ValidationUtil.checkNotFoundWithId(restaurant, restaurantId);
@@ -61,7 +60,6 @@ public class DishServiceImpl implements DishService{
     @Override
     @CacheEvict(value = "dishes", allEntries = true)
     public void delete(int id) {
-        ValidationUtil.checkRoleAdmin();
         ValidationUtil.checkNotFoundWithId(dishRepository.delete(id) != 0, id);
     }
 
@@ -69,7 +67,6 @@ public class DishServiceImpl implements DishService{
     @Transactional
     @CacheEvict(value = "dishes", allEntries = true)
     public void update(Dish dish, int id, Integer restaurantId) {
-        ValidationUtil.checkRoleAdmin();
         Assert.notNull(dish, "dish must not be null");
         ValidationUtil.assureIdConsistent(dish, id);
 

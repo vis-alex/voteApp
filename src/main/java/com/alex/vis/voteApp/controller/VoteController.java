@@ -1,10 +1,8 @@
 package com.alex.vis.voteApp.controller;
 
-import com.alex.vis.voteApp.model.Restaurant;
 import com.alex.vis.voteApp.model.Vote;
 import com.alex.vis.voteApp.security.AuthorizedUser;
 import com.alex.vis.voteApp.service.vote.VoteService;
-import com.alex.vis.voteApp.validation.ValidationUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -56,7 +54,8 @@ public class VoteController {
 
     @Operation(summary = "Get all votes", responses = {
             @ApiResponse(description = "Get votes success", responseCode = "200",
-                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Vote.class)))
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Vote.class))),
+            @ApiResponse(description = "You must have Role Admin.", responseCode = "403", content = @Content)
     })
     @GetMapping
     public List<Vote> getAll() {
@@ -68,7 +67,8 @@ public class VoteController {
     @Operation(summary = "Get vote", responses = {
             @ApiResponse(description = "Get vote success", responseCode = "200",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Vote.class))),
-            @ApiResponse(description = "Vote not found", responseCode = "404", content = @Content)
+            @ApiResponse(description = "Vote not found", responseCode = "404", content = @Content),
+            @ApiResponse(description = "You must have Role Admin.", responseCode = "403", content = @Content)
     })
     @GetMapping("/{id}")
     public Vote get(@PathVariable int id) {

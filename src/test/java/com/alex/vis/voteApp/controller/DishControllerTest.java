@@ -98,7 +98,7 @@ class DishControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(DISH_URL + FIRST_DISH_ID)
                         .with(userHttpBasic(user)))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -134,7 +134,7 @@ class DishControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(userHttpBasic(user))
                         .content(JsonUtil.writeValue(newDish)))
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -145,7 +145,7 @@ class DishControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post(DISH_URL)
                         .param("restaurant_id", String.valueOf(FIRST_RESTAURANT_ID))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(userHttpBasic(user))
+                        .with(userHttpBasic(admin))
                         .content(JsonUtil.writeValue(newDish)))
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -219,7 +219,7 @@ class DishControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(userHttpBasic(user))
                         .content(JsonUtil.writeValue(updated)))
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -228,7 +228,7 @@ class DishControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.put(DISH_URL + FIRST_DISH_ID)
                         .param("restaurant_id", String.valueOf(NOT_FOUND))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(userHttpBasic(user))
+                        .with(userHttpBasic(admin))
                         .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isUnprocessableEntity());
     }

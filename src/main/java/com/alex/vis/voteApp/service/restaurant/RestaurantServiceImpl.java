@@ -35,7 +35,6 @@ public class RestaurantServiceImpl implements RestaurantService{
     @CacheEvict(value = "restaurants", allEntries = true)
     public Restaurant create(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
-        ValidationUtil.checkRoleAdmin();
         ValidationUtil.checkNew(restaurant);
         return restaurantRepository.save(restaurant);
     }
@@ -43,7 +42,6 @@ public class RestaurantServiceImpl implements RestaurantService{
     @Override
     @CacheEvict(value = "restaurants", allEntries = true)
     public void delete(int id) {
-        ValidationUtil.checkRoleAdmin();
         ValidationUtil.checkNotFoundWithId(restaurantRepository.delete(id) != 0, id);
     }
 
@@ -51,7 +49,6 @@ public class RestaurantServiceImpl implements RestaurantService{
     @CacheEvict(value = "restaurants", allEntries = true)
     public void update(Restaurant restaurant, int id) {
         Assert.notNull(restaurant, "restaurant must not be null");
-        ValidationUtil.checkRoleAdmin();
         ValidationUtil.assureIdConsistent(restaurant, id);
         restaurantRepository.save(restaurant);
     }

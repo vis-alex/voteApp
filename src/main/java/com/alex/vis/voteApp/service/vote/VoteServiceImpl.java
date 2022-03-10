@@ -41,13 +41,11 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public List<Vote> getAll() {
-        ValidationUtil.checkRoleAdmin();
         return voteRepository.findAll();
     }
 
     @Override
     public Vote get(int id) {
-        ValidationUtil.checkRoleAdmin();
         return ValidationUtil.checkNotFoundWithId(voteRepository.getById(id), id);
     }
 
