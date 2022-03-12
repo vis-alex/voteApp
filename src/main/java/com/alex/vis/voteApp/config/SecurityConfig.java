@@ -65,5 +65,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         return daoAuthenticationProvider;
     }
-    //TODO Fix security config  access
 }

@@ -77,18 +77,23 @@ class VoteControllerTest {
                         .with(userHttpBasic(user)))
                 .andExpect(status().isCreated());
 
-        if (LocalTime.now().isAfter(ValidationUtil.endChangingVote)) {
+
+        ValidationUtil.endChangingVote = LocalTime.of(0, 1);
+
             mockMvc.perform(MockMvcRequestBuilders.post(VOTE_URL + "unvote/" + FIRST_RESTAURANT_ID)
                             .contentType(MediaType.APPLICATION_JSON)
                             .with(userHttpBasic(user)))
                     .andExpect(status().isForbidden());
-        } else {
+
+        ValidationUtil.endChangingVote = LocalTime.of(23, 59);
+
             mockMvc.perform(MockMvcRequestBuilders.post(VOTE_URL + "unvote/" + FIRST_RESTAURANT_ID)
                             .contentType(MediaType.APPLICATION_JSON)
                             .with(userHttpBasic(user)))
                     .andExpect(status().isNoContent());
-        }
-    }//TODO Fix this datetime
+
+        ValidationUtil.endChangingVote = LocalTime.of(11, 0);
+    }
 
     @Test
     void getAll() throws Exception {
